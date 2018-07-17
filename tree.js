@@ -48,60 +48,58 @@ class BST {
 	search (value) {
 		return this._searchRecur(value, this.root)
 	}
-	_preOrderBelowNode(fn, node, results) {
-		if (node === null) {return results}
-		if (node.left) {
-			const rLeft = this._preorderBelowNode(fn, node.left, results)
-		}
-
-		const rNode = fn(node)
-
-		if(node. right) {
-			const rRight = this._preorderBelowNode(fn, node.right)
-		}
-
-		return [...rLeft, rNode, ...rRight, ...results]
-
-	}
-	_traversing(node, path=[], order) {
+	_traversing(node, order) {
 		if (!node) {
-			return path
+			return []
 		}
 
-		const leftSubTreePath = this._traversing(node.left)
-		const rightSubTreePath = this._traversing(node.right)
+		const leftSubTreePath = this._traversing(node.left, order)
+		const rightSubTreePath = this._traversing(node.right, order)
 
 		switch (order) {
 			case 'pre':
-				return [...leftSubTreePath, node, ...rightSubTreePath]
-			case 'in':
 				return [node, ...leftSubTreePath, ...rightSubTreePath]
+			case 'in':
+				return [...leftSubTreePath, node, ...rightSubTreePath]
 			case 'post':
 				return [...leftSubTreePath, ...rightSubTreePath, node]
 			default:
 				return [...leftSubTreePath, node, ...rightSubTreePath]
 		}
 	}
-	preOrder(node, path=[]) {
+	preOrder(node) {
 		if (node === undefined) {
 			node = this.root
 		}
-		return this._traversing(node, path, 'pre')
+		return this._traversing(node, 'pre')
 	}
-	inOrder(node, path=[]) {
+	inOrder(node) {
 		if (node === undefined) {
 			node = this.root
 		}
-		return this._traversing(node, path, 'in')
+		return this._traversing(node, 'in')
 	}
-	postOrder(node, path=[]) {
+	postOrder(node) {
 		if (node === undefined) {
 			node = this.root
 		}
-		return this._traversing(node, path, 'post')
+		return this._traversing(node, 'post')
 	}
 }
 
+class AVL extends BST {
+
+  _heightDifferece(node) {
+
+  }
+  _rotateL() {
+    
+  }
+  _rotateR() {
+
+  }
+
+}
 
 module.exports = {
 	Node,
