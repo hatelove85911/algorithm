@@ -6,6 +6,18 @@ class Node {
 	}
 }
 
+class avlNode {
+	constructor (value) {
+		this.h = 0
+		this.value = value
+		this.left = null
+		this.right = null
+	}
+	growSubTree (which) {
+		this.h += which === 'l' ? -1 : 1
+	}
+}
+
 class BST {
 	constructor() {
 		this.root = null
