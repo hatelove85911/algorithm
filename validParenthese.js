@@ -1,23 +1,23 @@
 var pairs = {
-	'(':  ')',
-	'[': ']',
-	'{': '}'
+  '(':  ')',
+  '[': ']',
+  '{': '}'
 }
 function isPair (left, right) {
-	return pairs[left] !== undefined
+  return pairs[left] !== undefined
 }
 function isLeft (p) {
-	return Object.keys(pairs).indexOf(p) !== -1
+  return Object.keys(pairs).indexOf(p) !== -1
 }
 function isRight (p) {
-	return Object.values(pairs).indexOf(p) !== -1
+  return Object.values(pairs).indexOf(p) !== -1
 }
 function validParenthese(formula)  {
-	var stack = []
-	var isValid = false
+  var stack = []
+  var isValid = false
 
-	for (var i = 0; i < formula.length; i++) {
-		var curr = formula[i]
+  for (var i = 0; i < formula.length; i++) {
+    var curr = formula[i]
 	 	if (isLeft(curr)) {
 	 		stack.push(curr)
 	 	} else if (isRight(curr)){
