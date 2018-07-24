@@ -101,7 +101,7 @@ class BST {
 
 class AVL extends BST {
 
-  _heightDifferece(node) {
+  _heightDifferece() {
 
   }
   _rotateL() {
@@ -115,5 +115,7 @@ class AVL extends BST {
 
 module.exports = {
   Node,
-  BST
+  BST,
+  avlNode,
+  AVL
 }

@@ -21,3 +21,7 @@ function binarySearch (sortedArray, target, lowIndex, highIndex) {
     return binarySearch(sortedArray, target, lowIndex, highIndex)
   }
 }
+
+module.exports = {
+  binarySearch
+}

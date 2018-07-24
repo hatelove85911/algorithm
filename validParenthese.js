@@ -3,7 +3,7 @@ var pairs = {
   '[': ']',
   '{': '}'
 }
-function isPair (left, right) {
+function isPair (left) {
   return pairs[left] !== undefined
 }
 function isLeft (p) {
@@ -14,20 +14,22 @@ function isRight (p) {
 }
 function validParenthese(formula)  {
   var stack = []
-  var isValid = false
 
   for (var i = 0; i < formula.length; i++) {
     var curr = formula[i]
-	 	if (isLeft(curr)) {
-	 		stack.push(curr)
-	 	} else if (isRight(curr)){
-	 		if (stack.length === 0) { return false}
-	 		var prev = stack.pop()
-	 		if (!isPair(prev, curr)) {return false}
-	 	} 
-	 }
+    if (isLeft(curr)) {
+      stack.push(curr)
+    } else if (isRight(curr)){
+      if (stack.length === 0) { return false}
+      var prev = stack.pop()
+      if (!isPair(prev, curr)) {return false}
+    } 
+  }
 
-	 if (stack.length > 0) {return false}
+  if (stack.length > 0) {return false}
+  return true
+}
 
-	 return true
+module.exports = {
+  validParenthese
 }

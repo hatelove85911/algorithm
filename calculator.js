@@ -77,3 +77,7 @@ function calculator (formula) {
   }
   return doCalc(operands, operators)
 }
+
+module.exports = {
+  calculator
+}
