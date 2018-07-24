@@ -6,18 +6,6 @@ class Node {
   }
 }
 
-class avlNode {
-  constructor (value) {
-    this.h = 0
-    this.value = value
-    this.left = null
-    this.right = null
-  }
-  growSubTree (which) {
-    this.h += which === 'l' ? -1 : 1
-  }
-}
-
 class BST {
   constructor() {
     this.root = null
@@ -99,18 +87,59 @@ class BST {
   }
 }
 
+class avlNode {
+  constructor (value) {
+    this.h = 0
+    this.value = value
+    this.left = null
+    this.right = null
+    this.parent = null
+  }
+  growSubTree(branch, value) {
+    const newNode = new avlNode(value)
+    this[branch] = newNode
+    newNode.parent = this
+
+    const oldH = this.h
+    const hDelta = branch === 'left' ? -1 : 1
+    this.h += hDelta
+
+    // if the new height of node is bigger than earlier
+    // then all the parent height need to be adjusted
+    if (Math.abs(this.h) > Math.abs(oldH)) {
+      let parent = this.parent
+      let sub = this
+      while(parent) {
+        parent.h += sub === parent.left ? -1 : 1
+        sub = parent
+        parent = parent.parent
+      }
+    }
+  }
+}
 class AVL extends BST {
-
-  _heightDifferece() {
-
+  _insertRecur (value, node) {
+    if (value > node.value) {
+      if (node.right === null) {
+        node.growSubTree('right', value)
+      } else {
+        this._insertRecur(value, node.right)
+      }
+    } else {
+      if (node.left === null) {
+        node.growSubTree('left', value)
+      } else {
+        this._insertRecur(value, node.left)
+      }
+    }
   }
-  _rotateL() {
-    
+  insert(value) {
+    if (this.root === null) {
+      this.root = new avlNode(value)
+    } else {
+      this._insertRecur(value, this.root)
+    }
   }
-  _rotateR() {
-
-  }
-
 }
 
 module.exports = {

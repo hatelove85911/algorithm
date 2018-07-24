@@ -60,11 +60,24 @@ describe('BST', () => {
 
 }) 
 
+function treeSetup({v, h, l, r}) {
+  const root = new avlNode(v)
+  root.h = h
+  if (l) {
+    root.left = treeSetup(l)
+    root.left.parent = root
+  }
+  if (r) {
+    root.right = treeSetup(r)
+    root.right.parent = root
+  }
+  return root
+}
 
 describe('AVL', () => {
-  let avl, n13,n10,n5,n11,n4,n8,n15,n16
-  beforeEach(() => {
-    avl = new AVL()
+
+  it('should identical to initial height', ()=> {
+    let avl = new AVL()
     avl.insert(13)
     avl.insert(10)
     avl.insert(15)
@@ -72,52 +85,46 @@ describe('AVL', () => {
     avl.insert(11)
     avl.insert(16)
     avl.insert(4)
-    avl.insert(6)
+    avl.insert(8)
 
-    n13 = new avlNode(13)
-    n10 = new avlNode(10)
-    n5 = new avlNode(5)
-    n11 = new avlNode(11)
-    n4 = new avlNode(4)
-    n8 = new avlNode(8)
-    n15 = new avlNode(15)
-    n16 = new avlNode(16)
+    const initialTree = {
+      v: 13,
+      h: -1,
+      l: {
+        v: 10,
+        h: -1,
+        l: {
+          v: 5,
+          h: 0,
+          l: {
+            v: 4,
+            h: 0,
+          },
+          r: {
+            v: 8,
+            h: 0
+          }
+        },
+        r: {
+          v: 11,
+          h: 0
+        }
+      },
+      r: {
+        v: 15,
+        h: 1,
+        r: {
+          v: 16,
+          h: 0
+        }
+      }
+    }
+    const root = treeSetup(initialTree)
 
-
+    expect(avl.root).to.deep.equal(root)
   })
 
-  it('should identical to initial height', ()=> {
-    // setup relationship
-    n5.left = n4
-    n5.right = n8
-    n10.left = n5
-    n10.right = n11
-    n13.left = n10
-    n13.right = n15
-    n15.right = n16
-
-    // setup height
-    n13.h = -1
-    n10.h = -1
-    n5.h = 0
-    n11.h = 0
-    n4.h = 0
-    n8.h = 0
-    n15.h = 1
-    n16.h = 0
-
-    expect(avl.root).to.deep.equal(n13)
-  })
-
-  it('should automatically balanced in LL case', ()=> {
-    avl.insert(3)
-
-    // setup relationship
-    // let n3 = new avlNode(3)
-		
-    // setup height
-		
-  })
+  it('should automatically balanced in LL case')
   it('should automatically balanced in RR case')
   it('should automatically balanced in LR case')
   it('should automatically balanced in RL case')
