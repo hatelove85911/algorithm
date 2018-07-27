@@ -1,4 +1,4 @@
-const {Node, AVLNode} = require('../tree.js')
+const {Node, BST, AVLNode, AVL} = require('../tree.js')
 const {expect} = require('chai')
 
 function BSTSetup({v, l, r}) {
@@ -15,7 +15,8 @@ function BSTSetup({v, l, r}) {
 describe('BST', () => {
   let bst
   beforeEach(() => {
-    bst = new Node(6)
+    bst = new BST()
+    bst.insert(6)
     bst.insert(4)
     bst.insert(7)
     bst.insert(5)
@@ -43,7 +44,7 @@ describe('BST', () => {
       }
     }
     const tree = BSTSetup(model)
-    expect(bst).to.deep.equal(tree)
+    expect(bst.root).to.deep.equal(tree)
   })
 
   it('should get the node of value', () => {
@@ -110,7 +111,8 @@ function AVLSetup({v, h, l, r}) {
 }
 describe('AVL', () => {
   it('should identical to initial height', ()=> {
-    let avl = new AVLNode(13)
+    let avl = new AVL()
+    avl.insert(13)
     avl.insert(10)
     avl.insert(15)
     avl.insert(5)
@@ -153,11 +155,11 @@ describe('AVL', () => {
     }
     const tree = AVLSetup(model)
 
-    expect(avl).to.deep.equal(tree)
+    expect(avl.root).to.deep.equal(tree)
   })
 
   it('should automatically balanced in LL case', () => {
-    let avl = new AVLNode()
+    let avl = new AVL()
     avl.insert(13)
     avl.insert(10)
     avl.insert(15)
@@ -206,9 +208,152 @@ describe('AVL', () => {
     }
     const root = AVLSetup(treeBalanded)
 
-    expect(avl).to.deep.equal(root)
+    expect(avl.root).to.deep.equal(root)
   })
-  it('should automatically balanced in RR case')
-  it('should automatically balanced in LR case')
-  it('should automatically balanced in RL case')
+  it('should automatically balanced in RR case', () => {
+    let avl = new AVL()
+    avl.insert(30)
+    avl.insert(5)
+    avl.insert(35)
+    avl.insert(32)
+    avl.insert(40)
+    avl.insert(45)
+
+    const treeBalanded = {
+      v: 35,
+      h: 3,
+      l: {
+        v: 30,
+        h: 2,
+        l: {
+          v: 5,
+          h: 1
+        },
+        r: {
+          v: 32,
+          h: 1
+        }
+      },
+      r: {
+        v: 40,
+        h: 2,
+        r: {
+          v: 45,
+          h: 1
+        }
+      }
+    }
+    const root = AVLSetup(treeBalanded)
+
+    expect(avl.root).to.deep.equal(root)
+  })
+  it('should automatically balanced in LR case', () => {
+    let avl = new AVL()
+    avl.insert(13)
+    avl.insert(10)
+    avl.insert(15)
+    avl.insert(5)
+    avl.insert(11)
+    avl.insert(16)
+    avl.insert(4)
+    avl.insert(6)
+    avl.insert(7)
+
+    const treeBalanded = {
+      v: 13,
+      h: 4,
+      l: {
+        v: 6,
+        h: 3,
+        l: {
+          v: 5,
+          h: 2,
+          l: {
+            v: 4,
+            h: 1,
+          }
+        },
+        r: {
+          v: 10,
+          h: 2,
+          l: {
+            v: 7,
+            h: 1
+          },
+          r: {
+            v: 11,
+            h: 1
+          }
+        }
+      },
+      r: {
+        v: 15,
+        h: 2,
+        r: {
+          v: 16,
+          h: 1
+        }
+      }
+    }
+    const root = AVLSetup(treeBalanded)
+
+    expect(avl.root).to.deep.equal(root)
+  })
+  it('should automatically balanced in RL case', () => {
+    let avl = new AVL()
+    avl.insert(5)
+    avl.insert(2)
+    avl.insert(7)
+    avl.insert(1)
+    avl.insert(4)
+    avl.insert(6)
+    avl.insert(9)
+    avl.insert(3)
+    avl.insert(16)
+    avl.insert(15)
+
+    const treeBalanded = {
+      v: 5,
+      h: 4,
+      l: {
+        v: 2,
+        h: 3,
+        l: {
+          v: 1,
+          h: 1
+        },
+        r: {
+          v: 4,
+          h: 2,
+          l: {
+            v: 3,
+            h: 1
+          }
+        }
+      },
+      r: {
+        v: 7,
+        h: 3,
+        l: {
+          v: 6,
+          h: 1
+        },
+        r: {
+          v: 15,
+          h: 2,
+          l: {
+            v: 9,
+            h: 1
+          },
+          r: {
+            v: 16,
+            h: 1
+          }
+        }
+      }
+    }
+    const root = AVLSetup(treeBalanded)
+
+    expect(avl.root).to.deep.equal(root)
+  })
 }) 

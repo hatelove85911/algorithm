@@ -54,6 +54,25 @@ class Node {
   }
 }
 
+class BST {
+  constructor () {
+    this.root = null
+  }
+  insert (value) {
+    if (this.root === null) {
+      this.root = new Node(value)
+    } else {
+      this.root.insert(value)
+    }
+  }
+  search (value) {
+    return this.root === null ? null : this.root.search(value)
+  }
+  traversing (order, fn) {
+    this.root && this.root.traversing(order, fn)
+  }
+}
+
 class AVLNode extends Node {
   constructor (value) {
     super(value)
@@ -74,43 +93,97 @@ class AVLNode extends Node {
         this.left.insert(value, this)
       }
     }
-    // update height
-    this.h = 1 + Math.max(this.getHeight(this.left), this.getHeight(this.right))
 
-    // rebalance
-    const bf = this.getBF()
-    if (bf < -1) {
-      if (value > this.left.value) { // LR case rotation
-        // TODO
-      } else { // LL case rotation
-        // TODO
+    // check if subtree is still balanced
+    // if yes, recalculate height
+    // if not, rebalance
+    if (this.checkBalance(value) === true) {
+      this.recalHeight()
+    } else {
+      let top
+      switch (this.checkBalance(value)) {
+      case 'LL':
+        top = this.rightRotate()
+        break
+      case 'LR':
+        this.left = this.left.leftRotate()
+        top = this.rightRotate()
+        break
+      case 'RR':
+        top = this.leftRotate()
+        break
+      case 'RL':
+        this.right = this.right.rightRotate()
+        top = this.leftRotate()
+        break
       }
-    } else if (bf > 1) {
-      if (value > this.right.value) { // RR case rotation
-        // TODO
-      } else { // RL case rotation
-        // TODO
+      // update parent
+      if (parent === null) {
+        return top
+      } else {
+        parent[this === parent.left ? 'left' : 'right'] = top
       }
     }
   }
+  checkBalance (value) {
+    const bf = this.getBF()
+    if (bf < -1 && value > this.left.value) {
+      return 'LR'
+    } else if (bf < -1) {
+      return 'LL'
+    } else if (bf > 1 && value > this.right.value) {
+      return 'RR'
+    } else if (bf > 1) {
+      return 'RL'
+    } else {
+      return true
+    }
+  }
   leftRotate () {
-    const z = this
     const y = this
+    const x = y.right
+    y.right = x.left
+    x.left = y
+    y.recalHeight()
+    x.recalHeight()
+    return x
   }
   rightRotate () {
-
+    const y = this
+    const x = y.left
+    y.left = x.right
+    x.right = y
+    y.recalHeight()
+    x.recalHeight()
+    return x
   }
-  getHeight (node) {
-    node = node || this
-    return node ? node.h : 0
+  recalHeight () {
+    const leftSubtreeHeight = this.left ? this.left.getHeight() : 0
+    const rightSubtreeHeight = this.right ? this.right.getHeight() : 0
+    this.h = 1 + Math.max(leftSubtreeHeight, rightSubtreeHeight)
   }
-  getBF (node) {
-    node = node || this
-    return this.getHeight(node.right) - this.getHeight(node.left)
+  getHeight () {
+    return this.h
+  }
+  getBF () {
+    const leftSubtreeHeight = this.left ? this.left.getHeight() : 0
+    const rightSubtreeHeight = this.right ? this.right.getHeight() : 0
+    return rightSubtreeHeight - leftSubtreeHeight
   }
 }
 
+class AVL extends BST {
+  insert (value) {
+    if (this.root === null) {
+      this.root = new AVLNode(value)
+    } else {
+      this.root = this.root.insert(value, null) || this.root
+    }
+  }
+}
 module.exports = {
   Node,
-  AVLNode
+  BST,
+  AVLNode,
+  AVL
 }
